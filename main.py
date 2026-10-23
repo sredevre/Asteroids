@@ -11,11 +11,16 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+    # FPS measurement with Delta time variable set to 0.0
+    clock = pygame.time.Clock()
+    dt = 0.0
+
     # Start the infinite game loop
     while True:
+        
         # Log the state at every single iteration
         log_state()
-
+        
         # Checks the event queue inside the loop so the window responds
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -24,8 +29,10 @@ def main():
         # Fill the screen background with black
         screen.fill("black")
 
-        # Refresh the screen (this must happen last inside the loop)
+        # Refresh the screen
         pygame.display.flip()
+        dt = clock.tick(60) / 1000
+        
 
 if __name__ == "__main__":
     main()
