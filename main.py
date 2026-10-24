@@ -12,20 +12,20 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    # FPS measurement with Delta time variable set to 0.0
+    # FPS measurement with Delta time variable (dt) set to 0.0
     clock = pygame.time.Clock()
     dt = 0.0
 
-    # Create the triangle icon which is the player
+    # going to add a comment here as well
     player  = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     # Start the infinite game loop
     while True:
         
-        # Log the state at every single iteration
+        # Log the game state at every single iteration
         log_state()
         
-        # Checks the event queue inside the loop so the window responds
+        # Going to add a comment here
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return  # Exits the main() function and closes the game cleanly
@@ -33,10 +33,13 @@ def main():
         # Fill the screen background with black
         screen.fill("black")
 
-        #Refreshes the triangle icon (player) every frame
+        # Update the player each frame
+        player.update(dt)
+
+        # Refreshes the triangle icon (player) every frame
         player.draw(screen)
 
-        # Refresh the screen
+        # Refresh the screen for every frame
         pygame.display.flip()
         dt = clock.tick(60) / 1000
         
