@@ -1,5 +1,5 @@
 import pygame
-from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED
+from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED
 from circleshape import CircleShape
 
 
@@ -23,7 +23,7 @@ class Player(CircleShape):
     def rotate(self, dt: float) -> None:
         self.rotation += PLAYER_TURN_SPEED * dt
 
-
+    # This function allows for the player icon to update based on what key is pressed e.g. A for left
     def update(self, dt: float) -> None:
         keys = pygame.key.get_pressed()
 
@@ -31,6 +31,9 @@ class Player(CircleShape):
         if keys[pygame.K_a]:
             self.rotate(-dt)
 
-        # Makes the rotation increase which makes the player turn right
+        # Makes the rotation increase when pressing D which makes the player turn right
         if keys[pygame.K_d]:
             self.rotate(dt)
+
+    def move(self, dt: float) -> None:
+        pass
