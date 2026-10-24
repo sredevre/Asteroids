@@ -1,6 +1,7 @@
 import pygame
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from logger import log_state
+from player import Player
 
 print(f"Starting Asteroids with pygame version: {pygame.version.ver}")
 print(f"Screen width: {SCREEN_WIDTH}")
@@ -15,6 +16,9 @@ def main():
     clock = pygame.time.Clock()
     dt = 0.0
 
+    # Create the triangle icon which is the player
+    player  = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
     # Start the infinite game loop
     while True:
         
@@ -28,6 +32,9 @@ def main():
         
         # Fill the screen background with black
         screen.fill("black")
+
+        #Refreshes the triangle icon (player) every frame
+        player.draw(screen)
 
         # Refresh the screen
         pygame.display.flip()
