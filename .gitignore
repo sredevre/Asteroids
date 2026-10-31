@@ -7,3 +7,6 @@ __pycache__/
 .venv/
 venv/
 game_state.jsonl
+game_events.jsonl
+.python-version
+uv.lock
