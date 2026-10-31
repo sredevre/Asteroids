@@ -10,7 +10,7 @@ class Player(CircleShape):
         # Sets the players angle to 0 when starting the game
         self.rotation = 0
 
-        # Calculates the points of the triangle for pygame for the draw function to draw the player
+        # Calculates the points of the triangle for pygame, for the draw function to draw the player
     def triangle(self) -> list[pygame.Vector2]:
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
@@ -20,6 +20,7 @@ class Player(CircleShape):
         return [a, b, c]
 
     # Makes the players rotation consistent across different frame rates
+    # Also allows for the player to turn left and right by using it in the .update() method
     def rotate(self, dt: float) -> None:
         self.rotation += PLAYER_TURN_SPEED * dt
 
@@ -28,12 +29,31 @@ class Player(CircleShape):
         keys = pygame.key.get_pressed()
 
         # Makes the rotation decrease when pressing A which makes the player turn left
-        if keys[pygame.K_a]:
+        # Optional arrow key method with .K_LEFT to allow use of the left arrow key
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
             self.rotate(-dt)
 
         # Makes the rotation increase when pressing D which makes the player turn right
-        if keys[pygame.K_d]:
+        # Optional arrow key method with .K_RIGHT to allow use of the right arrow key
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
             self.rotate(dt)
 
+        # Makes the player moove forward when pressing the W key
+        # Optional arrow key method with .K_UP to allow use of the up arrow key
+        if keys[pygame.K_w] or keys[pygame.K_UP]:
+            # The .move is from the .move() method below
+            self.move(dt)
+
+        # Makes the player move backward when pressing the S key
+        # Optional arrow key method with .K_DOWN to allow use of the down arrow key
+        if keys[pygame.K_s] or keys[pygame.K_DOWN]:
+            # The .move is from the .move() method below
+            self.move(-dt)
+
+
+    # The move method, calculates the vectors and allows the player to move forwards and backwards by using it in the .update() method.
     def move(self, dt: float) -> None:
-        pass
+        unit_vector = pygame.Vector2(0, 1)
+        rotated_vector = unit_vector.rotate(self.rotation)
+        rotated_with_speed_vector = rotated_vector * PLAYER_SPEED * dt
+        self.position += rotated_with_speed_vector

@@ -2,6 +2,9 @@ import pygame
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from logger import log_state
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
+
 
 print(f"Starting Asteroids with pygame version: {pygame.version.ver}")
 print(f"Screen width: {SCREEN_WIDTH}")
@@ -16,14 +19,25 @@ def main():
     clock = pygame.time.Clock()
     dt = 0.0
 
+
+    # Sprite Groups created
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+
+    # Defines which groups (containers) each game object belongs to.
+    Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable,)
+
+
     # going to add a comment here as well
     player  = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    asteroid_field = AsteroidField()
 
     # Start the infinite game loop
     while True:
         
-        # Log the game state at every single iteration
-        log_state()
         
         # Going to add a comment here
         for event in pygame.event.get():
@@ -33,16 +47,25 @@ def main():
         # Fill the screen background with black
         screen.fill("black")
 
-        # Update the player each frame
-        player.update(dt)
 
-        # Refreshes the triangle icon (player) every frame
-        player.draw(screen)
+        # Object mangement using groups
+
+        # Update all objects in the updatable group at once
+        updatable.update(dt)
+
+        # Draw all objects in the drawable group individually by looping through them
+        for obj in drawable:
+            obj.draw(screen)
+
+
+        # Log the game state at every single iteration
+        log_state()
 
         # Refresh the screen for every frame
         pygame.display.flip()
         dt = clock.tick(60) / 1000
         
+
 
 if __name__ == "__main__":
     main()
