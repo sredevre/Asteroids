@@ -63,6 +63,13 @@ def main():
                 print("Game over!")
                 sys.exit()
 
+        for asteroid in asteroids:
+            for shot in shots:
+                if asteroid.collides_with(shot):
+                    log_event("asteroid_shot")
+                    shot.kill()
+                    asteroid.split()
+
         # Draw all objects in the drawable group individually by looping through them
         for obj in drawable:
             obj.draw(screen)
@@ -74,7 +81,10 @@ def main():
         # Refresh the screen for every frame
         pygame.display.flip()
         dt = clock.tick(60) / 1000
-        
+
+        # Check for collisions between bullets and asteroids
+
+
 
 
 if __name__ == "__main__":
