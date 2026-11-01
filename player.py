@@ -1,11 +1,15 @@
 import pygame
-from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED
+from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED, PLAYER_SHOOT_SPEED, PLAYER_SHOOT_COOLDOWN_SECONDS
 from circleshape import CircleShape
+from shot import Shot
 
 
 class Player(CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
+
+        # Shot cooldown timer starting at 0
+        self.shoot_timer = 0.0
 
         # Sets the players angle to 0 when starting the game
         self.rotation = 0
@@ -50,6 +54,13 @@ class Player(CircleShape):
             # The .move is from the .move() method below
             self.move(-dt)
 
+        # Makes the player shoot when pressing the spacebar
+        if keys[pygame.K_SPACE]:
+            self.shoot()
+
+        # Reduces the shot cooldown every second
+        self.shoot_timer -= dt
+
 
     # The move method, calculates the vectors and allows the player to move forwards and backwards by using it in the .update() method.
     def move(self, dt: float) -> None:
@@ -57,3 +68,20 @@ class Player(CircleShape):
         rotated_vector = unit_vector.rotate(self.rotation)
         rotated_with_speed_vector = rotated_vector * PLAYER_SPEED * dt
         self.position += rotated_with_speed_vector
+
+    def shoot(self):
+
+        # Gives a cooldown to the shooting speed of the player.
+        if self.shoot_timer > 0:
+            return
+
+        # Resets the cooldown clock immediately after a bullet is fired. 
+        self.shoot_timer = PLAYER_SHOOT_COOLDOWN_SECONDS
+
+
+        # Creates and launches a new bullet from the players current position.
+        # Spawns the shot
+        shot = Shot(self.position.x, self.position.y)
+
+        # Calculates the velocity vector
+        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
