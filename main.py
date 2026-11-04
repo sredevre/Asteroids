@@ -35,8 +35,10 @@ def main():
     Shot.containers = (shots, updatable, drawable)
 
 
-    # going to add a comment here as well
+    # Initialises the player (the triangle)
     player  = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    # Sends out Asteroids periodically
     asteroid_field = AsteroidField()
 
     # Start the infinite game loop
