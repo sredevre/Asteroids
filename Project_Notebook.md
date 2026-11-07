@@ -4,8 +4,6 @@ This is my project notebook for the Year 9 Asteroids project
 
 **Note**: Class Hierarchy Diagram and game state flow diagrams are seperate files in the GitHub repo, and were created using Lucidchart.
 
-**Note**: Test cases are in a seperate pytest file named test_main.py found in the GitHub project repo.
-
 <br>
 
 # IPO Table
