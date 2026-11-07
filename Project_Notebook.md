@@ -2,7 +2,9 @@
 
 This is my project notebook for the Year 9 Asteroids project
 
-**Note**: Class Hierarchy Diagram and game state flow diagrams are seperate files in the github repo, and were created using Lucidchart.
+**Note**: Class Hierarchy Diagram and game state flow diagrams are seperate files in the GitHub repo, and were created using Lucidchart.
+
+**Note**: Test cases are in a seperate pytest file named test_main.py found in the GitHub project repo.
 
 <br>
 
@@ -18,7 +20,6 @@ This is my project notebook for the Year 9 Asteroids project
 | Pygame events | Checks to see if the user has closed the game window | The game exits when the window is closed. |
 
 <br>
-
 
 # Collision Detection Strategy
 
@@ -36,4 +37,16 @@ The game uses two different collision types:
 1. The player and an asteroid (Results in game over)
 2. The asteroid and a bullet (Results in a split asteroid or the asteroid completely disappearing if it's small)
 
-#
+<br>
+
+# Reflection
+
+During the development of my Asteroids game I faced a few challenges mainly with small typos, minor mistakes and asteroid splitting.
+
+One challenge was debugging errors. Some errors were difficult to find and fix, which required me to go through my code and test different solutions until I found the problem. Sometime even the smallest typos made the whole game crash, like naming a variable something and when using it elsewhere adding an extra letter which completely broke the game until it was fixed.
+
+I also found asteroid splitting difficult. Getting the original asteroid to disappear and create two smaller asteroids moving in different directions was challenging. Understanding how velocity and vectors controlled the movement of the asteroids also took some time.
+
+If I were to improve my project in the future, I would add more features to make the game more interesting. For example, I could add a scoring system, different difficulty levels and new gameplay features.
+
+Overall I found this project pretty fun, VERY time consuming but still fun. It felt good to see how my hard work created a nice playable game that I could use in my free time or whenever I feel like coming back to it.
