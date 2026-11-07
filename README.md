@@ -64,6 +64,8 @@ The file contains set constants to control:
 
 # Main.py
 
+Since this is the most important file, it's of course going to be the longest part of the README.
+
 ## Quick Summary
 
 This is the core file for the whole project, it acts as the master controller of the game. It coordinates everything in the game by doing 3 main things:
@@ -270,19 +272,122 @@ These two lines handle the final stages of each frame:
 - ```clock.tick(60)``` limits the game to a maximum of 60 FPS and returns the time takes since the previous call in miliseconds
 - ```/ 1000``` converts the time returned from ```clock.tick(60)``` into seconds and stores it into ```dt``` for the next frame.
 
-### Running the game
+
+# CircleShape.py
+
+## Quick Summary
+
+This file contains the base class for the main game objects. It provides shared properties and methods that are inherited by Player, Asteroid and Shot.
+
+## Initialising the class
 
 ```
-if __name__ == "__main__":
-    main()
+def __init__(self, x: float, y: float, PLAYER_RADIUS: float) -> None:
+    self.position = pygame.Vector2(x, y)
+    self.velocity = pygame.Vector2(0, 0)
+    self.radius = PLAYER_RADIUS
 ```
 
-This checks whether the Python file is being run directly rather than imported into another file.
+Initialises each object with its position, velocity and radius.
 
-If it is being run directly, it calles ```main()``` to start the game.
+## Checking for collisions
 
-If another Python file wants to import something from main.py, perhaps a function or variable.
+```
+def collides_with(self, other):
+    distance = self.position.distance_to(other.position)
+    return distance <= self.radius + other.radius
+```
 
-Without this condition, importing main.py would automatically start the entire game.
+Checks whether two objects have collided by calculating the distance between their centres and comparing it against their combined radii.
 
-Although this is unlikely to be used in this project but it is there just in case.
+## Drawing and updating objects
+
+The```draw()``` and ```update()``` methods act as placeholders which can be overridden by other classes.
+
+This allows ```Player```, ```Asteroid``` and ```Shot``` to have their own drawing and movement behaviour while sharing the same base class.
+
+
+# Asteroid.py
+
+## Quick Summary
+
+This file contains the ```Asteroid``` class, which controls how asteroids are drawn, moved and split when hit by player shots.
+
+It inherits from ```CircleShape```, allowing it to reuse properties and methods such as position, velocity and collision detection.
+
+## Drawing and updating asteroids
+
+The ```draw()``` method overrides the parent class's drawing method to display asteroids as white circles.
+
+The ```update()``` method controls asteroid movement:
+
+```
+def update(self, dt: float):
+    self.position += self.velocity * dt
+```
+
+This updates the asteroid's position based on its velocity and delta time (```dt```).
+
+## Splitting asteroids
+
+The ```split()``` method handles what happens when an asteroid is hit by a player shot. The ```split()``` method:
+
+- Removes the original asteroid.
+- Checks whether it is already at its smallest size.
+- Creates two smaller asteroids with 20% increased speed.
+
+If the asteroid is already at its smallest size, it is simply destroyed without splitting.
+
+The method also logs successful splits using ```log_event()```.
+
+
+# Player.py
+
+## Quick Summary
+
+This file contains the ```Player``` class, which controls the player's spaceship, including its movement, rotation and shooting mechanics.
+
+It inherits from ```CircleShape```, allowing it to reuse properties such as position, velocity and radius.
+
+## Drawing the player
+
+The `triangle()` method calculates the three points needed to draw the player's spaceship based on its current position, rotation and radius.
+
+## Player movement and rotation
+
+The ```rotate()``` and ```move()``` methods control how the spaceship turns and moves around the screen.
+
+The ```update()``` method checks which keys the player is pressing:
+
+- W / Up Arrow: Moves forward.
+- S / Down Arrow:Moves backwards.
+- A / Left Arrow:** Rotates left.
+- D / Right Arrow:** Rotates right.
+- Spacebar: Fires a shot.
+
+Movement and rotation use delta time (```dt```) to keep them consistent across different frame rates.
+
+I added extra code to make arrow keys work because for some reason WASD annoys me in this game.
+
+## Shooting
+
+The ```shoot()``` method creates and launches a new ```Shot``` from the player's current position.
+
+It also uses ```PLAYER_SHOOT_COOLDOWN_SECONDS``` to prevent the player from firing continuously without a delay.
+
+
+# Shot.py
+
+## Quick Summary
+
+This file contains the ```Shot``` class, which controls the player's bullets, including how they are created, drawn and moved.
+
+It inherits from ```CircleShape```, allowing it to reuse properties such as position, velocity and radius.
+
+## Drawing and updating shots
+
+The ```draw()``` method overrides the parent class's drawing method to display shots as small white circles.
+
+The ```update()``` method controls bullet movement by updating its position using its velocity and delta time (```dt```).
+
+This allows shots to travel in the direction they were fired while maintaining consistent movement across different frame rates.
